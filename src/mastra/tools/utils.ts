@@ -40,8 +40,10 @@ const fuseOptions = {
   ignoreDiacritics: true,
   ignoreLocation: true,
   minMatchCharLength: 5,
-  ignoreFieldNorm: true,
-  threshold: 0.1,
+  // shouldSort: true,
+  //ignoreFieldNorm: true,
+  //findAllMatches: true,
+  threshold: 0.2,
 };
 
 export const findResults = async ({
@@ -60,9 +62,10 @@ export const findResults = async ({
   const fuse = new Fuse(index, fuseOptions);
   const results = fuse
     .search(query)
-    .filter((r) => (r.score || Infinity) <= fuseOptions.threshold)
+    //.filter((r) => (r.score || Infinity) <= fuseOptions.threshold)
     .sort((a, b) => (a.score || 0) - (b.score || 0))
     .slice(0, limit);
+  //console.log("fuse results", query, results);
   return results;
 };
 

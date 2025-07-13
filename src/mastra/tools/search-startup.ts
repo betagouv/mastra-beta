@@ -2,9 +2,9 @@ import memoizee from "memoizee";
 import { createTool } from "@mastra/core";
 import z from "zod";
 import { findResults } from "./utils";
-import { getMembersData } from "./search-member";
+import { getMembersData, MemberApiData } from "./search-member";
 
-interface StartupApiData {
+export interface StartupApiData {
   id: string;
   type: string;
   attributes: StartupApiDataAttributes;
@@ -23,6 +23,8 @@ interface StartupApiDataAttributes {
   sponsors: string[];
   thematiques: string[];
   accessibility_status: string;
+  members: MemberApiData[];
+  description?: string; // added at load time
 }
 
 interface StartupApiDataEvent {
@@ -50,6 +52,7 @@ interface StartupApiDataIncubator {
 
 const _getStartupsData = async () => {
   console.log("_getStartupsData");
+  const members = await getMembersData();
   const startups = (await fetch("https://beta.gouv.fr/api/v2.6/startups.json")
     .then((r) => r.json())
     .then((j) => j.data)) as StartupApiData[];
@@ -104,20 +107,27 @@ export const searchStartup = async (query: string) => {
   if (results.length) {
     const startupId = results[0].item.id;
     const startupData = startups.startups.find((m) => m.id === startupId);
+    if (!startupData) {
+      return null;
+    }
     // todo: better format and add team
     return {
       ...startupData,
-      content_url_encoded_markdown: null,
-      description: decodeURIComponent(
-        startupData?.attributes.content_url_encoded_markdown || ""
-      ),
+      attributes: {
+        ...startupData.attributes,
+        content_url_encoded_markdown: "",
+        description: decodeURIComponent(
+          startupData?.attributes.content_url_encoded_markdown || ""
+        ),
+      },
+      // only include active members
       members: members.members
         .filter(memberHasActiveMissionInStartup(startupId))
         .map((m) => ({
           role: m.role,
           fullname: m.fullname,
           id: m.id,
-          bio: m.bio,
+          competences: m.competences,
           domaine: m.domaine,
         })),
     };

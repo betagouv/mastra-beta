@@ -1,0 +1,28 @@
+{
+  "name": "mastra-beta",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "S"
+    }
+  },
+  "addons": ["postgresql:postgresql-sandbox"],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "APP_BASE_URL": {
+      "generator": "url"
+    },
+    "HOSTNAME": {
+      "generator": "template",
+      "template": "%APP%.osc-fr1.scalingo.io"
+    }
+  },
+  "scripts": {
+    "xpostdeploy": "npm run migrate",
+    "xfirst-deploy": "bash scalingo-dev-seed.sh"
+  }
+}

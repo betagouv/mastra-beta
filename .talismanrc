@@ -1,0 +1,18 @@
+fileignoreconfig:
+- filename: .env.example
+  checksum: d6339d287627bceb4885f824d67f8973234469c91adf12e4b6f6ab18db5639b3
+- filename: create-views.sql
+  checksum: 7cc758715ebd0950151e77bd2f64d0812a20029fd046ec7cee930dd0d3dcf00a
+- filename: environment.d.ts
+  checksum: 925b00288f9624dc75b6f18c7c705bafffe56039f6294f62131a6f687052ee23
+- filename: prompt-sql-detection.md
+  checksum: b8b1831b29f510ae1364a93edddfe277d9f099a1b3ca1875eb21dc33f1c1103b
+- filename: src/mastra/agents/doc-search-agent.ts
+  checksum: 23c9e881efd31996142f83154ac2b7f057385bb66dcd3ae4e2f543b1bee0ec79
+- filename: src/mastra/agents/sql-agent.ts
+  checksum: 7aadf604ec9f93015eff374fad7f611aaa40eb8c28797323b49a1c860a82bde7
+- filename: src/mastra/agents/sql-detection-agent.ts
+  checksum: b5d8955303ab20c6fa2cdb1866aab71197e2d2c1d62fd52e443138f4df6d6bd2
+scopeconfig:
+- scope: node
+version: "1.0"

@@ -49,7 +49,8 @@ const importMarkdownDocument = async ({ path, content }: MarkdownFileItem) => {
   const doc = MDocument.fromMarkdown(content);
   const chunks = await doc.chunk({
     // strategy: "markdown",
-    //  size: 1024,
+    strategy: "semantic-markdown",
+    //size: 1024,
     //overlap: 256,
     //separator: "\n",
   });
