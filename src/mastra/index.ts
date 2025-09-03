@@ -35,4 +35,24 @@ export const mastra = new Mastra({
     name: "Mastra",
     level: "debug",
   }),
+
+  server: {
+    middleware: [
+      {
+        handler: async (c, next) => {
+          const authHeader = c.req.header("Authorization");
+          if (authHeader === "beta@b0t42") {
+            await next();
+          }
+          return new Response("Unauthorized", { status: 401 });
+        },
+        path: "/*",
+      },
+      // Add a global request logger
+      async (c, next) => {
+        console.log(`${c.req.method} ${c.req.url}`);
+        await next();
+      },
+    ],
+  },
 });

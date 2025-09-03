@@ -9,7 +9,7 @@
     "build": "mastra build",
     "start": "mastra start",
     "prepare": "husky",
-    "create-doc-store": "npx tsx ./src/mastra/stores/documentation.ts"
+    "create-doc-store": "npx -y tsx ./src/mastra/stores/documentation.ts"
   },
   "keywords": [],
   "license": "Apache-2.0",
