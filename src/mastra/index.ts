@@ -43,6 +43,7 @@ export const mastra = new Mastra({
           const authHeader = c.req.header("Authorization");
           if (authHeader === "beta@b0t42") {
             await next();
+            return;
           }
           return new Response("Unauthorized", { status: 401 });
         },
