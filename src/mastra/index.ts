@@ -41,7 +41,7 @@ export const mastra = new Mastra({
       {
         handler: async (c, next) => {
           const authHeader = c.req.header("Authorization");
-          if (authHeader === "beta@b0t42") {
+          if (authHeader === process.env.AUTH_CODE) {
             await next();
             return;
           }
