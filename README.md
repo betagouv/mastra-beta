@@ -1,32 +1,30 @@
 # mastra-beta
 
-MCPs, agents and workflows to query beta.gouv.fr public data
+Agent IA au service de la communauté
 
 ## Workflow
 
 ```mermaid
 graph LR
 
-UserQuery-->Hinters
-Hinters-->Entities1[known entities]
-Hinters-->Documentation[documentation topics]
-Hinters-->DbTopics[database topics]
-DbTopics-->Enrichers
-Entities1-->Enrichers
-Documentation-->Enrichers
-Enrichers-->Entities2[known entities]
-Enrichers-->RAGDoc2[RAG documentation]
-Enrichers-->SQLQuery2[SQL query]
-Entities2-->Formatter
+UserQuery-->Classify
+subgraph agent
+Classify-->|API_BetaGouv|Entities1[known entities]
+Classify-->|doc.incubateur.net|RAGDoc2[documentation topics]
+Classify-->|Espace_Membre|DbTopics[SQL queries]
+Entities1-->Formatter
 RAGDoc2-->Formatter
-SQLQuery2-->Formatter
+DbTopics-->Formatter
+end
+Formatter-->UserQuery
 ```
 
-## Datasources:
+## Scope
 
-- beta.gouv API for members & startups
-- some espace-membre dedicated PostreSQL views
-- doc.incubateur.net
+- [x] queries about community members and startups
+- [x] queries about documentation
+- [ ] queries about code
+- [ ] queries about news (members, products, community updates)
 
 ## Dev
 
@@ -36,15 +34,28 @@ Create a `.env` from example
 npm i
 export OPENAI_API_BASE=xxx
 export OPENAI_API_KEY=xxx
+
+# setup data
+
+# vectorize documentation
+npm run create-doc-store
+
+# create espace-membre PostgreSQL view
+psql $ESPACE_MEMBRE_DATABASE_URL < create-views.sql
+
 npm run dev
 ```
 
 ## Todo
 
-- improve intial routing
+- improve initial routing
+- sql query transparency (explain to the user)
+- handle multi NER queries: "whats the diff in X and Y"
+- cron to update datas (documentation + fiches)
+- MCP
 - data:
-  - incubator teams
-  - fast
+  - incubator & teams
+  - calendar
   - données tech (stack, apis)
-  - automate schema syncs
-  - add incubators in names entities
+  - changelogs
+  - https://betagouv.github.io/beta.gouv.fr/startups.html

@@ -64,13 +64,13 @@ Liste des startups et des équipes
 const instructionsSQL = `You're an expert at PostgreSQL queries. Return a valid raw PostgreSQL query from the user query to extract the data you need to answer.
 
 RULES
- - Today date is 2025-07-25
+ - Today date is ${new Date().toISOString().substring(0, 10)}
  - prettify the SQL query and prefix with table names
  - dont alias tables
  - Use french date formats
- - use ILIKE and '%' operator when searching for text, strings, members, incubators
+ - use ILIKE and '%' operator when searching for text, strings, members, incubators and escape strings properly
  - use group by when necessary
- - limit to 25 results
+ - limit queries to 50 results
  - use active_startups.ghid as primary key for startups
  - use active_users.username as primary key for members
  - include the "pitch" and "thematiques" fields for startups

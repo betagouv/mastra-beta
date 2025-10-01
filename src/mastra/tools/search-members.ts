@@ -1,18 +1,13 @@
 import { Agent, createTool } from "@mastra/core";
-import { findResults } from "./utils";
-import memoizee from "memoizee";
 import z from "zod";
 import { getMembersData } from "./search-member";
 import { createOpenAI } from "@ai-sdk/openai";
-
-import { betaAgent } from "../agents/beta-agent";
 
 const openai = createOpenAI({
   baseURL: process.env.OPENAI_BASE_URL,
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const embeddingModel = process.env.EMBEDDING_MODEL || "bge-multilingual-gemma2";
 const languageModel = process.env.LANGUAGE_MODEL || "llama-3.3-70b-instruct";
 
 interface MemberApiData {

@@ -12,7 +12,9 @@ import { sqlDetectionAgent } from "../agents/sql-detection-agent";
 import { searchDocumentationTool } from "../tools/search-documentation";
 import { markdownTable } from "markdown-table";
 
-const client = new Client({ connectionString: process.env.BETA_DATABASE_URL });
+const client = new Client({
+  connectionString: process.env.ESPACE_MEMBRE_DATABASE_URL,
+});
 await client.connect();
 
 const topicsQuerySchema = docQuerySchema.extend({
@@ -240,12 +242,14 @@ const enrichersStep = createStep({
       rows: z
         .array(z.object({}))
         .describe("user query related database entries"),
+      sql: z.string().describe("generated SQL query"),
     })
   ),
   execute: async ({ inputData, runtimeContext }) => {
-    console.log("enrichersStep");
+    console.log("enrichersStep", inputData.hints);
     const documents = [];
     const rows = [];
+    let sql = "";
     if (
       inputData.hints.documentationScore > 0.3 &&
       inputData.hints.databaseScore < 0.8
@@ -274,7 +278,7 @@ const enrichersStep = createStep({
       const prompt = additionnalPrompt + `Query: ${inputData.query}`;
 
       //console.log("SQL prompt", prompt);
-      const sql = (await sqlAgent.generate(prompt)).text
+      sql = (await sqlAgent.generate(prompt)).text
         .replace(/```sql/, "")
         .replace(/```/, "")
         .trim();
@@ -285,6 +289,7 @@ const enrichersStep = createStep({
         const res = await client.query(sql);
         //console.log("rows", res.rows);
         if (!res.rows.length) {
+          console.log(res);
           throw "Cannot extract data";
         }
         rows.push(...res.rows);
@@ -302,6 +307,7 @@ const enrichersStep = createStep({
       entities,
       documents,
       rows,
+      sql,
     };
   },
 });
@@ -376,59 +382,71 @@ function isAbsoluteUrl(url: string): boolean {
   }
 }
 
-const formatterStep = createStep({
-  id: "formatter",
+const contextBuilderStep = createStep({
+  id: "context-builder",
   description: "Format context to answer the query",
   inputSchema: enrichersStep.outputSchema,
   outputSchema: z.object({
-    context: z.string().describe("Retrieved related data"),
-    query: z.string(),
+    //context: z.string().describe("Retrieved related data"),
+    query: z.string().describe("User query"),
+    sql: z.string().describe("generated SQL query"),
+    named_entities: z.array(z.object({})).describe("Related named entities"),
+    database_rows: z.array(z.object({}).describe("Related database entries")),
+    documentation_chunks: z.array(
+      z.object({}).describe("Related documentation chunks")
+    ),
     //answer: z.string(),
   }),
   execute: async ({ inputData, runtimeContext }) => {
-    console.log("formatterStep", inputData);
-    let context = "";
-    if (inputData.entities.length) {
-      context += "\n## Related Named entities\n\n";
-      context += inputData.entities.map((e) => `### ${e}`).join("\n\n");
-      context += "\n\n\n";
-    }
-    if (inputData.documents.length) {
-      context += "\n## Related documentation entries\n\n";
-      context += inputData.documents
-        .map(
-          (d) => `### ${d.url}\n\n${processMarkdownLinks(d.text, d.url)}\n\n`
-        )
-        .join("\n\n");
-      context += "\n\n\n";
-    }
-    if (inputData.rows.length) {
-      context += "\n## Related database rows that match the user query\n\n";
-      context += markdownTable([
-        Object.keys(inputData.rows[0]),
-        // @ts-ignore todo
-        ...inputData.rows.map((r) => Object.values(r)),
-      ]);
-      context += "\n\n\n";
-      //      context += "\n## SQL Query used to get the results\n\n";
-      // context += `\`\`\`sql\n${}\n\`\`\`\n\n`
-      //    context += "\n\n\n";
-    }
+    console.log("contextBuilderStep", inputData);
+    // let context = "";
+    // if (inputData.entities.length) {
+    //   context += "\n## Related Named entities\n\n";
+    //   context += inputData.entities.map((e) => `### ${e}`).join("\n\n");
+    //   context += "\n\n\n";
+    // }
+    // if (inputData.documents.length) {
+    //   context += "\n## Related documentation entries\n\n";
+    //   context += inputData.documents
+    //     .map(
+    //       (d) => `### ${d.url}\n\n${processMarkdownLinks(d.text, d.url)}\n\n`
+    //     )
+    //     .join("\n\n");
+    //   context += "\n\n\n";
+    // }
+    // if (inputData.rows.length) {
+    //   context += "\n## Related database rows that match the user query\n\n";
+    //   context += markdownTable([
+    //     Object.keys(inputData.rows[0]),
+    //     // @ts-ignore todo
+    //     ...inputData.rows.map((r) => Object.values(r)),
+    //   ]);
+    //   context += "\n\n\n";
+    //   //      context += "\n## SQL Query used to get the results\n\n";
+    //   // context += `\`\`\`sql\n${}\n\`\`\`\n\n`
+    //   //    context += "\n\n\n";
+    // }
     return {
-      context,
+      // context,
+      named_entities: inputData.entities,
       query: inputData.query,
+      documentation_chunks: inputData.documents.map((d) => ({
+        text: d.text,
+        url: d.url,
+      })),
+      database_rows: inputData.rows,
+      sql: inputData.sql,
     };
   },
 });
 
 export const betaWorkflow = createWorkflow({
   id: "beta-workflow",
-  description:
-    "Return context data about beta.gouv.fr members, teams and startups",
+  description: "Return data for all questions.",
   inputSchema: userQuerySchema,
-  outputSchema: z.object({ answer: z.string() }),
+  outputSchema: contextBuilderStep.outputSchema,
 })
   .then(hintersStep)
   .then(enrichersStep)
-  .then(formatterStep)
+  .then(contextBuilderStep)
   .commit();
