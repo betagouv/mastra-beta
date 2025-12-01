@@ -3,6 +3,23 @@ import { findResults } from "./utils";
 import memoizee from "memoizee";
 import z from "zod";
 
+export const memberApiDataSchema = z.object({
+  id: z.string(),
+  fullname: z.string(),
+  role: z.string(),
+  domaine: z.string(),
+  link: z.string(),
+  bio: z.string(),
+  missions: z.array(
+    z.object({
+      start: z.string(),
+      end: z.string(),
+      startups: z.array(z.string()),
+    })
+  ),
+  competences: z.array(z.string()),
+});
+
 export interface MemberApiData {
   id: string;
   fullname: string;
@@ -61,9 +78,9 @@ export const searchMemberTool = createTool({
     query: z.string().describe("Search query, ex: Ada Lovelace"),
   }),
   execute: async (context, options) => {
-    console.log("searchMemberTool.execute", context, options);
+    //   console.log("searchMemberTool.execute", context, options);
     const result = await searchMember(context.context.query);
-    console.log("searchMemberTool.result", result);
+    // console.log("searchMemberTool.result", result);
     if (!result) {
       return {
         error: `Cannot find informations about "${context.context.query}"`,
@@ -76,7 +93,7 @@ export const searchMemberTool = createTool({
 export const searchMember = async (query: string) => {
   const members = await getMembersData();
   const results = await findResults({ query, index: members.index });
-  console.log("searchMember.results", query, results);
+  // console.log("searchMember.results", query, results);
   if (results.length) {
     const memberData = members.members.find((m) => m.id === results[0].item.id);
     return memberData;

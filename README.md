@@ -2,7 +2,9 @@
 
 Agent IA au service de la communauté
 
-## Workflow
+## beta-agent
+
+### beta-workflows
 
 ```mermaid
 graph LR
@@ -15,6 +17,19 @@ Classify-->|Espace_Membre|DbTopics[SQL queries]
 Entities1-->Formatter
 RAGDoc2-->Formatter
 DbTopics-->Formatter
+end
+Formatter-->UserQuery
+```
+
+### skills-workflows
+
+```mermaid
+graph LR
+
+UserQuery-->ExtractSkills
+subgraph agent
+ExtractSkills-->ExtractMembers
+ExtractMembers-->Formatter
 end
 Formatter-->UserQuery
 ```
@@ -32,9 +47,6 @@ Create a `.env` from example
 
 ```sh
 npm i
-export OPENAI_API_BASE=xxx
-export OPENAI_API_KEY=xxx
-
 # setup data
 
 # vectorize documentation
@@ -54,8 +66,19 @@ npm run dev
 - cron to update datas (documentation + fiches)
 - MCP
 - data:
+  - publiccode: https://github.com/suitenumerique/docs/blob/main/publiccode.yml
   - incubator & teams
   - calendar
   - données tech (stack, apis)
   - changelogs
   - https://betagouv.github.io/beta.gouv.fr/startups.html
+
+### Idées
+
+- Bot qui ajoute des publiccode.yaml dans les repos
+- Bot pour trouver des pairs
+
+### Data maintenance
+
+- update documentation
+- update database views

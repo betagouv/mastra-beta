@@ -201,8 +201,11 @@ const hintersStep = createStep({
     console.log("hintersStep", inputData);
     // check if query related to documentation
     const documentationScore = await getDocumentationScore(inputData.query);
+    console.log("documentationScore", documentationScore);
     // check if named entities discovered
     const topicsResult = await extractTopics(inputData.query);
+    console.log("topicsResult", topicsResult);
+
     const namedEntities =
       topicsResult.isSpecificQuery && documentationScore < 0.8
         ? await getNamedEntities(topicsResult)
@@ -442,7 +445,8 @@ const contextBuilderStep = createStep({
 
 export const betaWorkflow = createWorkflow({
   id: "beta-workflow",
-  description: "Return data for all questions.",
+  description:
+    "Return answers for all beta.gouv questions except skills related : community, documentation, startups, products, tools, teams, technical support",
   inputSchema: userQuerySchema,
   outputSchema: contextBuilderStep.outputSchema,
 })
