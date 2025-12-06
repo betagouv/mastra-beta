@@ -15,7 +15,7 @@ const model = openai(languageModel);
 
 export const betaAgent = new Agent({
   name: "beta.gouv.fr agent",
-  workflows: { betaWorkflow, skillsWorkflow },
+  workflows: { betaWorkflow /*, skillsWorkflow*/ },
   description:
     "Questions about beta.gouv.fr community, teams, products, methodology, culture, organisation...",
   instructions,

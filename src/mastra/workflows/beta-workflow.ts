@@ -444,7 +444,7 @@ const contextBuilderStep = createStep({
 export const betaWorkflow = createWorkflow({
   id: "beta-workflow",
   description:
-    "Return answers for all beta.gouv questions except skills related : community, documentation, startups, products, tools, teams, technical support",
+    "Return answers for all beta.gouv questions : community, documentation, startups, products, tools, teams, technical support",
   inputSchema: userQuerySchema,
   outputSchema: contextBuilderStep.outputSchema,
 })
