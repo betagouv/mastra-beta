@@ -3,14 +3,12 @@ import { Client } from "pg";
 import { z } from "zod";
 import { MemberApiData, searchMember } from "../tools/search-member";
 import { searchStartup, StartupApiData } from "../tools/search-startup";
-import { markdownAgent } from "../agents/markdown-agent";
 import { sqlAgent } from "../agents/sql-agent";
 import { topicExtractorAgent } from "../agents/topic-extractor-agent";
 import { docQuerySchema, userQuerySchema } from "../tools/schemas";
 import { docDetectionAgent } from "../agents/doc-detection-agent";
 import { sqlDetectionAgent } from "../agents/sql-detection-agent";
 import { searchDocumentationTool } from "../tools/search-documentation";
-import { markdownTable } from "markdown-table";
 
 const client = new Client({
   connectionString: process.env.ESPACE_MEMBRE_DATABASE_URL,

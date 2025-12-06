@@ -14,9 +14,11 @@ fileignoreconfig:
 - filename: src/mastra/agents/doc-search-agent.ts
   checksum: 23c9e881efd31996142f83154ac2b7f057385bb66dcd3ae4e2f543b1bee0ec79
 - filename: src/mastra/agents/sql-agent.ts
-  checksum: ccf5cb85bc11b80f5dd27f655d0e63ef7478f62c53cb1472696864196b53730e
+  checksum: a1975f3addb96e28ccc1bb29fa68a18935e0f52ad14194b81a695a7fa2639659
 - filename: src/mastra/agents/sql-detection-agent.ts
-  checksum: b5d8955303ab20c6fa2cdb1866aab71197e2d2c1d62fd52e443138f4df6d6bd2
+  checksum: 0d601468fa458405ca6d325e13afb792b92bb3a2eb02c7d4fd0e039a06300453
+- filename: src/mastra/prompts/sql-query-generator.ts
+  checksum: f9d94898af1567adb7e2a8ff917327e0e0a50e3d5ca1ce968687e5441a5e4337
 - filename: src/mastra/tools/search-skills.ts
   checksum: f51d4786b5e9399f307ca377f57cd6418d3a0081cc31125da1447dfe2d759e18
 scopeconfig:

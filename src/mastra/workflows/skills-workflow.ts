@@ -1,7 +1,6 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
 import { MemberApiData } from "../tools/search-member";
-import { markdownAgent } from "../agents/markdown-agent";
 import { searchSkillsTool } from "../tools/search-skills";
 import { getEspaceMembreCommunitySearchURL } from "../../utils";
 
