@@ -2,6 +2,7 @@ import { Mastra } from "@mastra/core/mastra";
 import { PinoLogger } from "@mastra/loggers";
 import { LibSQLStore } from "@mastra/libsql";
 import { betaAgent } from "./agents/beta-agent";
+import { mcpAgent } from "./agents/mcp-agent";
 import { betagouv } from "./mcp/betagouv";
 import { pgVector } from "./pgvector";
 import { betaWorkflow } from "./workflows/beta-workflow";
@@ -16,6 +17,7 @@ export const mastra = new Mastra({
   mcpServers: { betagouv },
   agents: {
     betaAgent,
+    mcpAgent,
     docDetectionAgent,
     topicExtractorAgent,
     competencesExtractorAgent,

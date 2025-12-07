@@ -12,6 +12,8 @@ export const betagouv = new MCPServer({
   description:
     "get informations about betagouv members, teams and digital products",
   version: "0.1.0", // we will add more configuration here later
+  prompts: undefined,
+  resources: undefined,
   tools: {
     searchMemberTool,
     searchSkillsTool,

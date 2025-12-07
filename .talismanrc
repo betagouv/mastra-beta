@@ -13,6 +13,8 @@ fileignoreconfig:
   checksum: 0170cadf1935fb2ec45d13c473a968d06bc690a57d21df5faa0458416b4269c2
 - filename: src/mastra/agents/doc-search-agent.ts
   checksum: 23c9e881efd31996142f83154ac2b7f057385bb66dcd3ae4e2f543b1bee0ec79
+- filename: src/mastra/agents/mcp-agent.ts
+  checksum: 55fbbd3047b5894b44f5dd94e3c2a233db4840b5b8fe610e2292a7b32f143d5d
 - filename: src/mastra/agents/sql-agent.ts
   checksum: a1975f3addb96e28ccc1bb29fa68a18935e0f52ad14194b81a695a7fa2639659
 - filename: src/mastra/agents/sql-detection-agent.ts
