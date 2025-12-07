@@ -1,18 +1,28 @@
 fileignoreconfig:
 - filename: .env.example
-  checksum: d6339d287627bceb4885f824d67f8973234469c91adf12e4b6f6ab18db5639b3
+  checksum: 0334275b6827808eb1fa89c0a5e588954ec9072e28ae4f84763470f97022f376
 - filename: create-views.sql
   checksum: 7cc758715ebd0950151e77bd2f64d0812a20029fd046ec7cee930dd0d3dcf00a
 - filename: environment.d.ts
   checksum: 925b00288f9624dc75b6f18c7c705bafffe56039f6294f62131a6f687052ee23
 - filename: prompt-sql-detection.md
-  checksum: b8b1831b29f510ae1364a93edddfe277d9f099a1b3ca1875eb21dc33f1c1103b
+  checksum: 11fe73ddf4242958ef132d412e1e29ddf01d415204a73d94a7541ad2c5261302
+- filename: src/mastra/agents/beta-agent.ts
+  checksum: 67fe31572b326b6525ae3c893575ac367197c9576be71624b8c0f09dce50f8f6
+- filename: src/mastra/agents/competences-extractor-agent.ts
+  checksum: 0170cadf1935fb2ec45d13c473a968d06bc690a57d21df5faa0458416b4269c2
 - filename: src/mastra/agents/doc-search-agent.ts
   checksum: 23c9e881efd31996142f83154ac2b7f057385bb66dcd3ae4e2f543b1bee0ec79
+- filename: src/mastra/agents/mcp-agent.ts
+  checksum: 55fbbd3047b5894b44f5dd94e3c2a233db4840b5b8fe610e2292a7b32f143d5d
 - filename: src/mastra/agents/sql-agent.ts
-  checksum: 7aadf604ec9f93015eff374fad7f611aaa40eb8c28797323b49a1c860a82bde7
+  checksum: a1975f3addb96e28ccc1bb29fa68a18935e0f52ad14194b81a695a7fa2639659
 - filename: src/mastra/agents/sql-detection-agent.ts
-  checksum: b5d8955303ab20c6fa2cdb1866aab71197e2d2c1d62fd52e443138f4df6d6bd2
+  checksum: 0d601468fa458405ca6d325e13afb792b92bb3a2eb02c7d4fd0e039a06300453
+- filename: src/mastra/prompts/sql-query-generator.ts
+  checksum: f9d94898af1567adb7e2a8ff917327e0e0a50e3d5ca1ce968687e5441a5e4337
+- filename: src/mastra/tools/search-skills.ts
+  checksum: f51d4786b5e9399f307ca377f57cd6418d3a0081cc31125da1447dfe2d759e18
 scopeconfig:
 - scope: node
 version: "1.0"

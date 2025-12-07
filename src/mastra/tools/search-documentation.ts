@@ -12,7 +12,7 @@ const openai = createOpenAI({
 });
 
 // Create a tool for semantic search over our paper embeddings
-export const searchDocumentationVectorTool = createVectorQueryTool({
+const searchDocumentationVectorTool = createVectorQueryTool({
   id: "search-documentation",
   description:
     "Search for documentation on : methodology, culture, organisation, services, tools and day to day process and technical questions on the betagouv internal organisation",
@@ -23,10 +23,6 @@ export const searchDocumentationVectorTool = createVectorQueryTool({
   includeSources: true,
   enableFilter: false,
   vectorStore: pgVector,
-
-  // execute: () => {
-  //   return true;
-  // },
 });
 
 // create dedicated tool

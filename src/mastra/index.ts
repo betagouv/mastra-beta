@@ -2,34 +2,34 @@ import { Mastra } from "@mastra/core/mastra";
 import { PinoLogger } from "@mastra/loggers";
 import { LibSQLStore } from "@mastra/libsql";
 import { betaAgent } from "./agents/beta-agent";
+import { mcpAgent } from "./agents/mcp-agent";
 import { betagouv } from "./mcp/betagouv";
 import { pgVector } from "./pgvector";
 import { betaWorkflow } from "./workflows/beta-workflow";
+import { skillsWorkflow } from "./workflows/skills-workflow";
 import { docDetectionAgent } from "./agents/doc-detection-agent";
-//import { docSearchAgent } from "./agents/-doc-search-agent";
-import { markdownAgent } from "./agents/markdown-agent";
 import { sqlAgent } from "./agents/sql-agent";
 import { topicExtractorAgent } from "./agents/topic-extractor-agent";
+import { competencesExtractorAgent } from "./agents/competences-extractor-agent";
 import { sqlDetectionAgent } from "./agents/sql-detection-agent";
 
 export const mastra = new Mastra({
-  // workflows: { weatherWorkflow },
-
   mcpServers: { betagouv },
   agents: {
     betaAgent,
+    mcpAgent,
     docDetectionAgent,
-    // docSearchAgent,
-    markdownAgent,
     topicExtractorAgent,
+    competencesExtractorAgent,
     sqlAgent,
+    sqlDetectionAgent,
   },
   storage: new LibSQLStore({
     // stores telemetry, evals, ... into memory storage, if it needs to persist, change to file:../mastra.db
     url: ":memory:",
   }),
   vectors: { pgVector },
-  workflows: { betaWorkflow },
+  workflows: { betaWorkflow, skillsWorkflow },
 
   logger: new PinoLogger({
     name: "Mastra",

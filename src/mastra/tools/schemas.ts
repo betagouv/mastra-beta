@@ -3,7 +3,7 @@ import { StartupApiData } from "./search-startup";
 import { MemberApiData } from "./search-member";
 
 export const userQuerySchema = z.object({
-  query: z.string().describe("Original full user query"),
+  query: z.string().describe("Original raw user query"),
 });
 
 export const entitySchema = z
